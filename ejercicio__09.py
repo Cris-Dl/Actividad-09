@@ -5,19 +5,23 @@ def add_info_movie(titule, year, genero):
     total_pelis.append(info_peli)
 
 def view_info_movies():
-    for i, j in enumerate(total_pelis):
-        print(f"Entrada {i + 1}")
-        for k, l in enumerate(j):
-            if k == 0:
-                print(f"Nombre: {l}")
-            elif k == 1:
-                print(f"Año de estreno: {l}")
-            elif k == 2:
-                print(f"Genero: {l}")
-                print()
-            else:
-                print("Datos desconocido")
-                print()
+    number_movies = len(total_pelis)
+    if number_movies != 0:
+        for i, j in enumerate(total_pelis):
+            print(f"Entrada {i + 1}")
+            for k, l in enumerate(j):
+                if k == 0:
+                    print(f"Nombre: {l}")
+                elif k == 1:
+                    print(f"Año de estreno: {l}")
+                elif k == 2:
+                    print(f"Genero: {l}")
+                    print()
+                else:
+                    print("Datos desconocido")
+                    print()
+    else:
+        print("No hay ninguna pelicula registrada")
 
 def search_movies_genre():
     number_movies = len(total_pelis)
@@ -28,17 +32,63 @@ def search_movies_genre():
         for i, j in enumerate(total_pelis):
             for k, l in enumerate(j):
                 if k == 2:
-                    if l != genre:
+                    if genre == l:
+                        print(j)
+                    elif genre!= l:
                         if attemps != i:
                             attemps += 1
                         else:
                             print("No hay ninguna pelicula")
-                    else:
-                        print(j)
     else:
         print("No hay ni una pelicula registrada")
         print()
 
+def delete_movie():
+    number_movies = len(total_pelis)
+    attemps = 0
+    if number_movies != 0:
+        delete_movie = str(input("Ingrese el nombre de la pelicula que desea eliminar: ")).lower()
+        for i, j in enumerate(total_pelis):
+            for k, l in enumerate(j):
+                if k == 0:
+                    if delete_movie == l:
+                        total_pelis.remove(j)
+                    elif l != delete_movie:
+                        if attemps != i:
+                            attemps += 1
+    else:
+        print("No hay ni una pelicula registrada")
+        print()
+
+def count_movie_and_genre():
+    number_pelis = len(total_pelis)
+    if number_pelis != 0:
+        print(f"Hay un total de {number_pelis} peliculas registradas")
+        conteo = {}
+        for i, j in enumerate(total_pelis):
+            for k, l in enumerate(j):
+                if k == 2:
+                    if l in conteo:
+                        conteo[l] += 1
+                    else:
+                        conteo[l] = 1
+        print(f"Cantidad de peliculas por genero: {conteo}")
+    else:
+        print("No hay ninguna pelicula registrada")
+
+def old_movie():
+    number_pelis = len(total_pelis)
+    if number_pelis !=0:
+        min_actual = float('inf')
+        for i, j in enumerate(total_pelis):
+            for k, l in enumerate(j):
+                if k == 1:
+                    if l < min_actual:
+                        min_actual = l
+                        peli = j
+        print(f"La pelica más antigua es: {peli}")
+    else:
+        print()
 
 while True:
     print(" --Menú-- ")
@@ -55,7 +105,7 @@ while True:
             print("Agregar peliculas")
             number_pelis = int(input("Cuantas peliculas deseass ingresar: "))
             for i in range(number_pelis):
-                titule_peli = str(input("Ingrese el titulo de la pelicula: "))
+                titule_peli = str(input("Ingrese el titulo de la pelicula: ")).lower()
                 year_peli = int(input("Ingrese el año de estreno: "))
                 genero_peli = str(input("Ingrese el genero de la pelicula: ")).lower()
                 print()
@@ -71,26 +121,12 @@ while True:
             print()
         case "4":
             print("Eliminar pelicula")
-            number_movies = len(total_pelis)
-            attemps = 0
-            if number_movies != 0:
-                delete_movie = str(input("Ingrese el nombre de la pelicula que desea eliminar: "))
-                print(f"Peliculas del genero {delete_movie}")
-                for i, j in enumerate(total_pelis):
-                    for k, l in enumerate(j):
-                        if k == 0:
-                            if l != delete_movie:
-                                if attemps != i:
-                                    attemps += 1
-                                else:
-                                    print("No existe esa pelicula")
-                            else:
-                                del total_pelis[k]
-            else:
-                print("No hay ni una pelicula registrada")
-                print()
+            delete_movie()
+            print()
         case "5":
             print("Estadisticas del catalogo")
+            count_movie_and_genre()
+            old_movie()
         case "6":
             print("Saliendo del programa, gracias por su preferencia")
             break
